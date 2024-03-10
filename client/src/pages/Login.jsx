@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { profile, adminLoginAsync } from "../Redux/Slices/adminSlice";
 import { useNavigate } from "react-router";
 import { PATHS } from "../Router/Path";
+import Cookies from "js-cookie";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,11 +16,27 @@ const Login = () => {
     formState: { errors },
   } = useForm();
 
+  
   const onSubmit = async (data) => {
-    dispatch(adminLoginAsync(data));
-    alert(msg);
-    if (user) {
-      navigate(PATHS.adminDashboard);
+    await dispatch(adminLoginAsync(data)); // Wait for the login action to complete
+    const role = Cookies.get("user") && JSON.parse(Cookies.get("user"))?.role;
+    console.log("🚀 ~ Login ~ role:", role);
+    if (Cookies.get("token")) {
+      alert("login Successfully");
+      switch (role) {
+        case "admin":
+          navigate(PATHS.adminDashboard);
+          break;
+        case "supervisor":
+          navigate(PATHS.supervisorDashboard);
+          break;
+        case "worker":
+          navigate(PATHS.workerDashboard);
+          break;
+        default:
+          // navigate(PATHS.login);
+          break;
+      }
     }
   };
 

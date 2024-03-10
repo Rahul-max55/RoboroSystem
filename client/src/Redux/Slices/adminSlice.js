@@ -33,7 +33,7 @@ export const registerUserAsync = createAsyncThunk(
 
 export const getAllUserAsync = createAsyncThunk(
   "admin/getAllUser",
-  async (data) => {
+  async () => {
     const response = await fetch("http://localhost:5001/admin/getAllUser");
     const responseObj = await response.json();
     return responseObj;
@@ -55,6 +55,21 @@ export const deleteUserDataAsync = createAsyncThunk(
   }
 );
 
+export const updateDataAsync = createAsyncThunk(
+  "all/updateData",
+  async (update) => {
+    const response = await fetch("http://localhost:5001/admin/updateAccount", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(update),
+    });
+    const responseObj = await response.json();
+    return responseObj;
+  }
+);
+
 const initialState = {
   profile: {},
   allUser: [],
@@ -62,25 +77,30 @@ const initialState = {
   error: null,
 };
 
-const userSlice = createSlice({
+const adminSlice = createSlice({
   name: "admin",
   initialState: initialState,
+  reducers: {
+    setUser(state, userData) {
+      state.profile = { user: userData };
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(adminLoginAsync.fulfilled, (state, action) => {
-      console.log(action.payload);
-      Cookies.set("token", action.payload.token);
+      action.payload.token && Cookies.set("token", action.payload.token);
+      action.payload.user &&
+        Cookies.set("user", JSON.stringify(action.payload.user));
       state.profile = action.payload;
     });
     builder.addCase(adminLoginAsync.pending, (state, action) => {
       state.isLoading = true;
     });
     builder.addCase(adminLoginAsync.rejected, (state, action) => {
-      console.log(action.payload);
       state.isLoading = false;
       state.error = action.payload;
     });
     builder.addCase(registerUserAsync.fulfilled, (state, action) => {
-      console.log();
+      state.profile = [...action.payload];
       state.allUser = [...state.allUser, action.payload];
     });
     builder.addCase(registerUserAsync.pending, (state, action) => {
@@ -111,10 +131,23 @@ const userSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     });
+    builder.addCase(updateDataAsync.fulfilled, (state, action) => {
+      console.log(action.payload);
+      // state.allUser = state.allUser.filter((val, index) => val._id !== id);
+    });
+    builder.addCase(updateDataAsync.pending, (state, action) => {
+      state.isLoading = true;
+    });
+    builder.addCase(updateDataAsync.rejected, (state, action) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    });
   },
 });
 
-export default userSlice.reducer;
+export default adminSlice.reducer;
 export const profile = (state) => state.admin.profile;
 export const role = (state) => state.admin.profile.role;
 export const allUser = (state) => state.admin.allUser;
+
+export const { setUser } = adminSlice.actions;

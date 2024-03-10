@@ -1,9 +1,9 @@
+import accepts from "accepts";
 import account from "../Schema/accountSchema.js";
 import jwt from "jsonwebtoken";
 
 export const loginAccountController = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await account.findOne({ email: email });
     if (!user) {
@@ -22,7 +22,7 @@ export const loginAccountController = async (req, res) => {
 };
 
 export const createAccountController = async (req, res) => {
-  console.log("🚀 ~ createAccountController ~ req.body:", req.body);
+  // console.log("🚀 ~ createAccountController ~ req.body:", req.body);
   try {
     const data = await account.create(req.body);
     if (!data) {
@@ -41,8 +41,8 @@ export const getAllUsers = async (req, res) => {
       res.status(404).send("user data is not found");
     }
     const updatedUser = data.filter((val) => val.role !== "admin");
-    console.log("🚀 ~ getAllUsers ~ updatedUser:", updatedUser);
-    res.status(200).json({ msg: "get all users data", updatedUser });
+    const adminData = data.filter((val) => val.role === "admin");
+    res.status(200).json({ msg: "get all users data", updatedUser, adminData });
   } catch (error) {
     console.log(error);
   }
@@ -50,8 +50,8 @@ export const getAllUsers = async (req, res) => {
 
 export const deleteUserData = async (req, res) => {
   try {
-    const allUser = await account.findByIdAndDelete({_id:req.body.id});
-    console.log("🚀 ~ deleteUserData ~ allUser:", allUser)
+    const allUser = await account.findByIdAndDelete({ _id: req.body.id });
+    // console.log("🚀 ~ deleteUserData ~ allUser:", allUser)
 
     if (!allUser) {
       return res.status(404).json({ msg: "user not exists" });
@@ -61,4 +61,8 @@ export const deleteUserData = async (req, res) => {
   } catch (error) {
     res.status(500).json({ msg: "some error occurred", error });
   }
+};
+
+export const uploadImageProductController = async (req, res) => {
+  console.log(req.body);
 };

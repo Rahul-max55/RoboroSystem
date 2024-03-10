@@ -11,13 +11,15 @@ export const Authorization = async (req, res, next) => {
   let user;
 
   try {
-    user = jwt.verify(token, process.env.JWT_SECRET , 14);
-     if(!user){
-      return res.status(401).json({msg:"Token is not verify"})
-     }
+    user = jwt.verify(token, process.env.JWT_SECRET, 14);
+    if (!user) {
+      return res.status(401).json({ msg: "Token is not verify" });
+    }
   } catch (error) {
     console.log(error);
-    return res.status(401).json({ status: false, msg:"jwt token is error" , error });
+    return res
+      .status(401)
+      .json({ status: false, msg: "jwt token is error", error });
   }
 
   try {
@@ -30,7 +32,8 @@ export const Authorization = async (req, res, next) => {
     return;
   } catch (error) {
     console.log(error);
-    return  res.status(401).json({ status: false, msg: "Internal Server Error" });
+    return res
+      .status(401)
+      .json({ status: false, msg: "Internal Server Error" });
   }
-  
 };

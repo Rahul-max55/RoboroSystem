@@ -10,11 +10,11 @@ const accountSchema = mongoose.Schema(
       enum: ["admin", "worker", "supervisor"],
       require: true,
     },
+    images: { type: [String] },
     Date: { type: Date, default: Date.now },
   },
   { versionKey: false }
 );
 
-const account = mongoose.model("account" , accountSchema);
-
+const account = mongoose.model("account", accountSchema);
 export default account;
