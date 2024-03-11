@@ -10,7 +10,6 @@ const accountSchema = mongoose.Schema(
       enum: ["admin", "worker", "supervisor"],
       require: true,
     },
-    images: { type: [String] },
     Date: { type: Date, default: Date.now },
   },
   { versionKey: false }

@@ -6,15 +6,12 @@ import {
   loginAccountController,
   uploadImageProductController,
 } from "../controller/account.js";
-
+import { Authorization } from "../middlewares/userAuthorization.js";
 
 const adminRouter = express.Router();
 adminRouter.post("/login", loginAccountController);
-adminRouter.post("/createAccount", createAccountController);
-adminRouter.get("/getAllUser", getAllUsers);
-adminRouter.delete("/deleteUser", deleteUserData);
-
-
-adminRouter.put("/updateAccount", uploadImageProductController);
+adminRouter.post("/createAccount", Authorization, createAccountController);
+adminRouter.get("/getAllUser", Authorization, getAllUsers);
+adminRouter.delete("/deleteUser", Authorization, deleteUserData);
 
 export default adminRouter;

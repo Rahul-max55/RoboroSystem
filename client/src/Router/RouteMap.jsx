@@ -21,7 +21,10 @@ const RouteMap = () => {
   return (
     <>
       <Routes>
-        <Route path="/*" element={<PageNotFound />} />
+        {commonRoutes?.map((val) => {
+          return <Route path={val.path} element={<val.Element />} />;
+        })}
+
         {role === "admin" &&
           adminRoutes?.map((val) => {
             return val?.isProtected ? (

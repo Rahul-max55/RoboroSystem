@@ -21,9 +21,8 @@ const WorkerDashboard = () => {
       <Header title="Worker Dashboard" />
 
       <div className="flex justify-center bg-gray-100 p-4 items-center flex-col">
-        {imgSrc ? (
-          <img src={imgSrc} alt="webcam" />
-        ) : (
+        <div className="flex">
+          {imgSrc && <img src={imgSrc} alt="webcam" />}
           <Webcam
             height={600}
             width={600}
@@ -31,7 +30,7 @@ const WorkerDashboard = () => {
             screenshotFormat="image/png"
             audio={false}
           />
-        )}
+        </div>
         <div className="mt-6">
           {imgSrc ? (
             <div className="space-x-4">

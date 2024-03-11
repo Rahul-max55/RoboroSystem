@@ -9,20 +9,18 @@ import Cookies from "js-cookie";
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { msg, user } = useSelector(profile);
+  const { msg } = useSelector(profile);
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  
   const onSubmit = async (data) => {
-    await dispatch(adminLoginAsync(data)); // Wait for the login action to complete
+    dispatch(adminLoginAsync(data)); // Wait for the login action to complete
     const role = Cookies.get("user") && JSON.parse(Cookies.get("user"))?.role;
     console.log("🚀 ~ Login ~ role:", role);
     if (Cookies.get("token")) {
-      alert("login Successfully");
       switch (role) {
         case "admin":
           navigate(PATHS.adminDashboard);
@@ -39,6 +37,11 @@ const Login = () => {
       }
     }
   };
+
+  useEffect(() => {
+    // Print the message only when it changes
+    msg && alert(msg);
+  }, [msg]); // Re-run this effect whenever `msg` changes
 
   return (
     <>

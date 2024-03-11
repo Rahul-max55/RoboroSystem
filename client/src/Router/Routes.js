@@ -3,6 +3,7 @@ import { PATHS } from "./Path";
 import AdminDashboard from "../pages/admin/AdminDashboard";
 import SupervisorDashboard from "../pages/supervisor/SupervisorDashboard";
 import WorkerDashboard from "../pages/worker/WorkerDashboard";
+import PageNotFound from "../pages/PageNotFound";
 
 export const commonRoutes = [
   {
@@ -11,15 +12,15 @@ export const commonRoutes = [
     isProtected: false,
     Element: Login,
   },
+  {
+    id: "pageNotFound",
+    path: PATHS.pageNotFound,
+    isProtected: false,
+    Element: PageNotFound,
+  },
 ];
 
 export const adminRoutes = [
-  {
-    id: "login",
-    path: PATHS.login,
-    isProtected: false,
-    Element: Login,
-  },
   {
     id: "adminDashboard",
     path: PATHS.adminDashboard,
@@ -30,12 +31,6 @@ export const adminRoutes = [
 
 export const workerRoutes = [
   {
-    id: "login",
-    path: PATHS.login,
-    isProtected: false,
-    Element: Login,
-  },
-  {
     id: "workerDashboard",
     path: PATHS.workerDashboard,
     isProtected: true,
@@ -44,12 +39,6 @@ export const workerRoutes = [
 ];
 
 export const supervisorRoutes = [
-  {
-    id: "login",
-    path: PATHS.login,
-    isProtected: false,
-    Element: Login,
-  },
   {
     id: "supervisorDashboard",
     path: PATHS.supervisorDashboard,
